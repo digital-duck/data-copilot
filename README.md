@@ -7,7 +7,7 @@ By streamlining the data-to-insight life-cycle, Data Copilot is a game-changer t
 [Data-Copilot Demo Video](https://www.youtube.com/watch?v=Xwf8UI5gM5k)
 
 ## Overview
-![welcome](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/00-data-copilot-arch-design.png)
+![welcome](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/00-data-copilot-arch-design.png)
 
 ## Features
 
@@ -21,35 +21,35 @@ By streamlining the data-to-insight life-cycle, Data Copilot is a game-changer t
 
 ### Configure
 Choose data source, vector store, LLM model
-![configure](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p1-config.png)
+![configure](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p1-config.png)
 
 
 ### Database
 Review database schema, data
-![database](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p2-database.png)
+![database](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p2-database.png)
 
 
 ### Knowledge Base
 Define knowledge base with table schema and documentation
-![knowledgebase](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p3-knowledgebase.png)
+![knowledgebase](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p3-knowledgebase.png)
 
 ### Ask AI
 Ask question on data (built on RAG), get answer in SQL, dataframe, python, plotly chart
-![rag1](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p4-rag-1.png)
+![rag1](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p4-rag-1.png)
 
-![rag2](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p4-rag-2.png)
+![rag2](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p4-rag-2.png)
 
 ### Results
 Question & answer pairs are saved to database
-![results](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p5-results.png)
+![results](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p5-results.png)
 
 #### LLM benchmarks
 Various LLM models for compared for chinook dataset, accuracy above 90% has been achieved for top proprietary models and open-source models.
-![results](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p6-llm-benchmark.png)
+![results](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p6-llm-benchmark.png)
 
 ### Import Tools
 Import data from CSV or connect to database
-![import](https://raw.githubusercontent.com/gongwork/data-copilot/refs/heads/main/docs/p9-import-sqlite.png)
+![import](https://raw.githubusercontent.com/digital-duck/data-copilot/refs/heads/main/docs/p9-import-sqlite.png)
 
 
 
