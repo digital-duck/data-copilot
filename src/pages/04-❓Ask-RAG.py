@@ -45,17 +45,30 @@ sample_questions = {
     see [text-to-SQL questions](https://github.com/wgong/py4kids/blob/master/lesson-18-ai/vanna/note_book/gongai/test-2/ollama-llama3-chromadb-sqlite-test-2.ipynb)
     """,
 
-    "movie" : f"""
+    "imdb" : f"""
     #### Sample prompts for "Movie" dataset
-    - What are the tables in the movie database
-    - what are the top 5 movies with highest budget? use bar chart to visualize data
     - how many movies are there
-    - how many directors are there
+    - how many movie directors are there
     - Find these 3 directors: James Cameron ; Luc Besson ; John Woo
-    - Find all directors with name starting with Steven
     - What movies have Steven Spielberg directed, please list them alphabetically
+    - Find 10 best comedy films from the 1980s ranked by votes (Classic starting point)
+    - Show me top 10 drama movies from the 1990s with over 100k votes (Mainstream hits)
+    - List 10 highest-rated documentary films from 2000-2010 (Genre exploration)
+    - What are the top 10 movies featuring Tom Hanks ranked by votes? (Actor focus)
+    - Who are the top 10 directors based on total votes across their films? (Creator discovery)
+    - Show me movies longer than 3 hours with highest votes (Runtime pattern)
+    - List TV series that ran for more than 10 seasons (TV exploration)
+    - I like to watch movies about wall street, show me top 10 titles
 
-    see [kaggle IMDB notebook](https://www.kaggle.com/code/priy998/imdb-sqlite/notebook)
+    - For any interesting film from above queries:
+        - Tell me about [movie title] (Get plot, reception, impact)
+        - What makes [movie title] a significant film in its genre?
+    
+    More info:
+    - [IMDb Wikipedia](https://www.wikiwand.com/en/articles/IMDb)
+    - [imdb-sqlite at pypi.org](https://pypi.org/project/imdb-sqlite/)
+    - [imdb-sqlite at github](https://github.com/jojje/imdb-sqlite)
+    - [IMDB notebook at kaggle](https://www.kaggle.com/code/priy998/imdb-sqlite/notebook)
     """,
 
     "stock" : f"""
