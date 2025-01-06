@@ -83,5 +83,12 @@ Add business terms and descriptions into knowledgebase to enhance context search
 Visit [ollama.ai](https://ollama.com/) to install open-source LLM models and run them locally. 
 
 
+## Roadmap
+
+### Auth
+
+### Task Management
+
+### Privacy
 
 

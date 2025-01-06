@@ -1,11 +1,3 @@
-"""
-# ToDo
-- [2024-11-16]
-    - add Chat CSV
-
-# Done
-"""
-
 from utils import *
 
 
