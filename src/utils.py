@@ -75,11 +75,19 @@ from vanna.base import SQL_DIALECTS, VECTOR_DB_LIST
 from vanna.utils import convert_to_string_list 
 
 import logging
+
 # Configure the logging system
+log_dir = Path(__file__).parent / "store/file/log/data_copilot"
+log_dir.mkdir(parents=True, exist_ok=True)
+log_path = log_dir / "data_copilot.log"
+if not log_path.exists():
+    with open(log_path, 'w'):
+        pass
+
 logging.basicConfig(
     level=logging.INFO,  # Set the minimum logging level
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename=Path(__file__).parent / "store/file/log/data_copilot/data_copilot.log"  # Optional: write to a file instead of console
+    filename=log_path  # Optional: write to a file instead of console
 )
 
 #############################

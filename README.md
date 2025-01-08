@@ -56,11 +56,45 @@ Import data from CSV or connect to database
 ## Setup
 
 ```
+## (1) create virtual env
+## ============================
 conda create -n data_copilot python=3.11
 conda activate data_copilot
+
+## (2) create your local working folder
+mkdir ssa  # aka "self-service-analytics" or anything else of your choice
+
+## (3) Install forked Vanna library from source
+## =============================
+cd ssa
+git clone git@github.com:digital-duck/ssadata.git
+
+cd ssadata
+pip install -e .
+
+## (4) Install Data-Copilot from source 
+## ============================
+cd ssa  # back to root folder
+git clone git@github.com:digital-duck/data-copilot.git
+
+cd data-copilot
 pip install -r requirements.txt 
-cd src
+
+## (5) Enable LLM model access
+## =============================
+## available top LLM models are listed here: 
+##  https://lmarena.ai/?leaderboard
+
+## API_KEY is required to access proprietary models (such as Google/Anthropic/OpenAI)
 cp .env.example .env   # add API_KEY in .env
+
+## open-source LLM models are available locally via Ollama here: 
+## https://ollama.com/
+## no API_KEY is required
+
+## (6) launch streamlit app
+## =============================
+cd src
 streamlit run Data-Copilot.py
 ```
 
