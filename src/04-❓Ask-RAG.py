@@ -1,7 +1,10 @@
 from utils import *
 
 st.set_page_config(layout="wide")
-st.header(f"{STR_MENU_ASK_RAG} ❓")
+is_rag = 0 if st.session_state.get("config_disable_rag", False) else 1
+# print(f"is_rag = {is_rag}")
+page_title = STR_MENU_ASK_RAG if is_rag else STR_MENU_ASK_LLM
+st.header(f"{page_title} ❓")
 
 TABLE_NAME = CFG["TABLE_QA"]
 KEY_PREFIX = f"col_{TABLE_NAME}"
@@ -52,8 +55,8 @@ sample_questions = {
     - Find these 3 directors: James Cameron ; Luc Besson ; John Woo
     - What movies have Steven Spielberg directed, please list them alphabetically
     - Find 10 best comedy films from the 1980s ranked by votes (Classic starting point)
-    - * Show me top 10 drama movies from the 1990s with over 100k votes (Mainstream hits)
-    - * List 10 highest-voted documentary films from 2000-2010 with votes (Genre exploration)
+    - Show me top 10 drama movies from the 1990s with over 100k votes (Mainstream hits)
+    - List 10 highest-rated documentary films from 2000-2010 (Genre exploration)
     - What are the top 10 movies featuring Tom Hanks ranked by votes? (Actor focus)
     - Who are the top 10 directors based on total votes across their films? (Creator discovery)
     - Show me movies longer than 3 hours with highest votes (Runtime pattern)
@@ -263,8 +266,7 @@ def ask_rag(my_question):
                 "assistant",
                 avatar=VANNA_ICON_URL,
             )
-            assistant_message_table.write(my_df)
-            # assistant_message_table.dataframe(my_df)
+            assistant_message_table.dataframe(my_df)
 
     with c_right:
 
@@ -330,7 +332,6 @@ def ask_ai():
 
     if not my_question: return 
 
-    is_rag = 0 if st.session_state.get("config_disable_rag", False) else 1
     if is_rag:
         my_answer = ask_rag(my_question)
     else:

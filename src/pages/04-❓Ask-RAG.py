@@ -1,7 +1,10 @@
 from utils import *
 
 st.set_page_config(layout="wide")
-st.header(f"{STR_MENU_ASK_RAG} ❓")
+is_rag = 0 if st.session_state.get("config_disable_rag", False) else 1
+# print(f"is_rag = {is_rag}")
+page_title = STR_MENU_ASK_RAG if is_rag else STR_MENU_ASK_LLM
+st.header(f"{page_title} ❓")
 
 TABLE_NAME = CFG["TABLE_QA"]
 KEY_PREFIX = f"col_{TABLE_NAME}"
@@ -329,7 +332,6 @@ def ask_ai():
 
     if not my_question: return 
 
-    is_rag = 0 if st.session_state.get("config_disable_rag", False) else 1
     if is_rag:
         my_answer = ask_rag(my_question)
     else:
