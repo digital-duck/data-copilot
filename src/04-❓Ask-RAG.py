@@ -52,8 +52,8 @@ sample_questions = {
     - Find these 3 directors: James Cameron ; Luc Besson ; John Woo
     - What movies have Steven Spielberg directed, please list them alphabetically
     - Find 10 best comedy films from the 1980s ranked by votes (Classic starting point)
-    - Show me top 10 drama movies from the 1990s with over 100k votes (Mainstream hits)
-    - List 10 highest-rated documentary films from 2000-2010 (Genre exploration)
+    - * Show me top 10 drama movies from the 1990s with over 100k votes (Mainstream hits)
+    - * List 10 highest-voted documentary films from 2000-2010 with votes (Genre exploration)
     - What are the top 10 movies featuring Tom Hanks ranked by votes? (Actor focus)
     - Who are the top 10 directors based on total votes across their films? (Creator discovery)
     - Show me movies longer than 3 hours with highest votes (Runtime pattern)
@@ -263,7 +263,8 @@ def ask_rag(my_question):
                 "assistant",
                 avatar=VANNA_ICON_URL,
             )
-            assistant_message_table.dataframe(my_df)
+            assistant_message_table.write(my_df)
+            # assistant_message_table.dataframe(my_df)
 
     with c_right:
 
