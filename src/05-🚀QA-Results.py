@@ -76,7 +76,7 @@ def review_qa_history():
 
     c1, _, c2 = st.columns([8,1,2])
     with c1:
-        st.text_area("Question", value=row_question, height=50, disabled=False, key=f"{KEY_PREFIX}_question")
+        st.text_area("Question", value=row_question, height=100, disabled=False, key=f"{KEY_PREFIX}_question")
     with c2:
         st.checkbox("Use RAG?", value=(row_is_rag==1), key="{KEY_PREFIX}_is_rag")
         st.checkbox("Valid SQL?", value=(row_sql_is_valid=="Y"), key="{KEY_PREFIX}_valid_sql")

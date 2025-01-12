@@ -1,7 +1,8 @@
 **/*u8hi*
 
 **/*.bin
-
+**/*.sqlite3
+**/*.duckdb
 
 # Byte-compiled / optimized / DLL files
 

@@ -1,2 +1,4 @@
-# streamlit run Data-Copilot.py
-streamlit run app.py
+streamlit run Data-Copilot.py
+
+# below not working
+# streamlit run app.py
