@@ -16,8 +16,11 @@ st.markdown(f"""
 - [Streamlit](https://streamlit.io/) - Build data apps faster !
 - [Ollama](https://ollama.com/) - Your AI companion: no cloud-strings attached !
 - [SQLite](https://www.sqlite.org/) - Small, fast, self-contained, highly-reliable, full-featured, SQL database engine
-- [GitHub](https://github.com/gongwork/data-copilot) - Source codes at your service.
-     - [YouTube](https://www.youtube.com/watch?v=Xwf8UI5gM5k) - Watch the world
+- [GitHub](https://github.com/digital-duck/data-copilot) - Source codes at your service.
+- [YouTube](https://www.youtube.com/) - Watch the world
+     - [Data CoPilot Demo - 1 : Music Store](https://youtu.be/Xwf8UI5gM5k)
+     - [Data CoPilot Demo - 2 : Movie Explorer](https://youtu.be/szQX8chA2t0)
+            
 - [Chatbot Arena LLM Leaderboard](https://lmarena.ai/?leaderboard) - Community-driven Evaluation for Best LLM and AI chatbots
 
 """, unsafe_allow_html=True)
