@@ -6,27 +6,40 @@ st.header(f"{STR_MENU_RESULT} 🚀")
 TABLE_NAME = CFG["TABLE_QA"]
 KEY_PREFIX = f"col_{TABLE_NAME}"
 
+def prepare_df(selected_cols, where_clause, DB_URL = CFG["META_DB_URL"]):
+    df = None
+    try:
+        with DBConn(DB_URL) as _conn:
+            sql_stmt = f"""
+                select 
+                    {','.join(selected_cols)}
+                from {TABLE_NAME}
+                where 1=1 and {where_clause}
+                order by updated_at desc
+                ;
+            """
+            df = pd.read_sql(sql_stmt, _conn)
+    except Exception as e:
+        st.error(str(e))
+    return df
+
 def review_qa_history():
     # if "previous_row" not in st.session_state:
     #     st.session_state.previous_row = None
     df = None 
     selected_cols = [ "question", "sql_generated", "py_generated", "fig_generated", "is_rag", "sql_is_valid", "id", "id_config"]
 
-    search_question = st.text_input("🔍Search question:", key=f"{KEY_PREFIX}_search_question").strip()
+    c1, _, c2 = st.columns([2,1,10])
+    with c1:
+        btn_refresher = st.button("Refresher")
+    with c2:
+        search_question = st.text_input("🔍Search question:", key=f"{KEY_PREFIX}_search_question").strip()
+
     where_clause = f" question like '%{search_question}%'" if search_question else " 1=1 "
 
-
-    DB_URL = CFG["META_DB_URL"]
-    with DBConn(DB_URL) as _conn:
-        sql_stmt = f"""
-            select 
-                {','.join(selected_cols)}
-            from {TABLE_NAME}
-            where 1=1 and {where_clause}
-            order by updated_at desc
-            ;
-        """
-        df = pd.read_sql(sql_stmt, _conn)
+    df = prepare_df(selected_cols, where_clause) 
+    if btn_refresher:
+        df = prepare_df(selected_cols, where_clause) 
 
     # display grid
     grid_resp = ui_display_df_grid(

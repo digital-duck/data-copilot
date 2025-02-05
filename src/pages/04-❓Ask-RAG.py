@@ -103,40 +103,36 @@ def db_insert_qa_result(qa_data, DEBUG_FLAG=True):
     if not answer: return
 
     my_sql = answer.get("my_sql", {})
+    sql_generated = ""
+    sql_ts_delta = ""
     if my_sql:
         sql_generated = escape_single_quote(my_sql.get("data"))
         sql_ts_delta = my_sql.get("ts_delta")
-    else:
-        sql_generated = ""
-        sql_ts_delta = ""
     
-    is_valid_flag = answer.get("my_valid_sql").get("data")
+    is_valid_flag = answer.get("my_valid_sql", {}).get("data")
     if isinstance(is_valid_flag, bool):
         sql_is_valid = "Y" if is_valid_flag else "N"
     else:
         sql_is_valid = is_valid_flag
 
     my_plot = answer.get("my_plot", {})
+    py_generated = ""
+    py_ts_delta = ""
     if my_plot:
         py_generated = escape_single_quote(my_plot.get("data"))
         py_ts_delta = my_plot.get("ts_delta")
-    else:
-        py_generated = ""
-        py_ts_delta = ""
 
     my_fig = answer.get("my_fig", {})
+    fig_generated = ""
     if my_fig:
         fig_generated = escape_single_quote(str(my_fig.get("data")))
-    else:
-        fig_generated = ""
 
     my_summary = answer.get("my_summary", {})
+    summary_generated = ""
+    summary_ts_delta = ""
     if my_summary:
         summary_generated = escape_single_quote(my_summary.get("data"))
         summary_ts_delta = my_summary.get("ts_delta")
-    else:
-        summary_generated = ""
-        summary_ts_delta = ""
 
     # id = get_uuid()
     curr_ts = get_ts_now()
