@@ -10,6 +10,7 @@
     - save chart to png into `reports/images/img_<id>.png`
     - format code as markdown blocks (sql, python)
     - save question/answer into `reports/raw_<id>.md`
+    - all done 
 
 - Add `Tag Question` button
     - include tagged question into report
