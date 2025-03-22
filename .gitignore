@@ -1,8 +1,12 @@
 **/*u8hi*
 
 **/*.bin
-**/*.sqlite3
 **/*.duckdb
+
+**/*.sqlite3
+
+# run the following to fix binary file merge conflict
+# git rm --cached src/store/vector/chroma/data_copilot/chroma.sqlite3
 
 # Byte-compiled / optimized / DLL files
 
