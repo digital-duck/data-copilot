@@ -7,12 +7,35 @@ cfg_data = db_current_cfg()
 DB_NAME = cfg_data.get("db_name")
 DB_URL = cfg_data.get("db_url")    
 # st.write(DB_NAME, DB_URL)
+vn = setup_vanna_cached(cfg_data)
+
+def _cb_clear_question_sql_pair():
+    q_text = st.session_state.get("add_sql_q", "")
+    sql_text = st.session_state.get("add_sql", "")
+    if sql_text.strip() and q_text.strip():
+        result = vn.train(question=q_text, sql=sql_text, dataset=DB_NAME)
+
+        st.session_state["add_sql_q"] = ""
+        st.session_state["add_sql"] = ""
+
+def _cb_clear_schema():
+    ddl_text = st.session_state.get("add_ddl", "")
+    if ddl_text.strip():
+        result = vn.train(ddl=ddl_text, dataset=DB_NAME)
+
+        st.session_state["add_ddl"] = ""
+                  
+def _cb_clear_documentation():
+    doc_text = st.session_state.get("add_doc", "")
+    if doc_text.strip():
+        result = vn.train(documentation=doc_text, dataset=DB_NAME)
+        # st.write(result)
+
+        st.session_state["add_doc"] = ""
 
 def do_knowledgebase():
     df = None
     
-    vn = setup_vanna_cached(cfg_data)
-
     with st.expander("Manage Knowledge", expanded=True):
         c_1, _, c_2, c_3, c_4 = st.columns([2,1,1,2,1])
         with c_1:
@@ -67,11 +90,7 @@ def do_knowledgebase():
             ddl_text = st.text_area("DDL script", value="", height=100, key="add_ddl"
                                 ,placeholder=ddl_sample)
 
-            btn_add_ddl = st.button("Add DDL")
-            if btn_add_ddl and ddl_text:
-                ddl_text = strip_brackets(ddl_text)
-                result = vn.train(ddl=ddl_text, dataset=DB_NAME)
-                # st.write(result)
+            st.button("Add DDL", on_click=_cb_clear_schema, key="btn_add_ddl")
 
 
     with st.expander("Add Documentation", expanded=False):
@@ -79,11 +98,8 @@ def do_knowledgebase():
         doc_text = st.text_area("Documentation", value="", height=100, key="add_doc"
                             ,placeholder=doc_sample)
 
-        if st.button("Add", key="btn_add_a_doc") and doc_text:
-            result = vn.train(documentation=doc_text, dataset=DB_NAME)
-            st.write(result)
-            st.session_state["add_doc"] = ""
-                
+        st.button("Add", on_click=_cb_clear_documentation, key="btn_add_a_doc")
+
 
         df_doc = None
         TABLE_BUS_TERM = CFG["TABLE_BUS_TERM"]
@@ -112,11 +128,9 @@ def do_knowledgebase():
         with c4:
             sql_text = st.text_area("SQL query", value="", height=100, key="add_sql"
                             ,placeholder=sql_sample)
-        if st.button("Add", key="btn_add_question_sql") and sql_text and q_text:
-            result = vn.train(question=q_text, sql=sql_text, dataset=DB_NAME)
-            st.write(result)
-            st.session_state["add_sql_q"] = ""
-            st.session_state["add_sql"] = ""
+
+        st.button("Add", on_click=_cb_clear_question_sql_pair, key="btn_add_question_sql")
+
 
 
 

@@ -174,7 +174,7 @@ def csv_import_tool():
                         f.write(file.getvalue())
                     
                     # Read DataFrame
-                    df = pd.read_csv(save_path)
+                    df = pd.read_csv(save_path, sep='\t',)
                     
                     # Validate DataFrame
                     if not validate_dataframe(df, file.name):
