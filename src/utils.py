@@ -72,7 +72,7 @@ from vanna_calls import (
 )
 
 from vanna.base import SQL_DIALECTS, VECTOR_DB_LIST
-from vanna.utils import convert_to_string_list 
+from vanna.utils import convert_to_string_list,take_last_n_messages
 
 import logging
 

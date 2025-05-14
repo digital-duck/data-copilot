@@ -12,6 +12,8 @@ KEY_PREFIX = f"col_{TABLE_NAME}"
 cfg_data = db_current_cfg()
 DB_URL = cfg_data.get("db_url")
 
+if "chat_history" not in st.session_state:
+    st.session_state["chat_history"] = []
 
 sample_questions = {
 
@@ -192,11 +194,26 @@ def ask_llm_direct(my_question):
 
     st_cache_enabled = st.session_state.get("enable_st_cache", True)
 
+    # ToDo:
+    # add chat history management
+    use_last_n_message = st.session_state.get("config_chat_history", 3)
+    show_chat_history = st.session_state.get("config_show_chat_history", False)
+
+    chat_history = st.session_state["chat_history"]
+    chat_history = take_last_n_messages(chat_history, n=use_last_n_message)
+
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
 
+    if chat_history:
+        prompt = chat_history + [{"role": "user", "content": my_question}]
+    else:
+        prompt = my_question
+    if show_chat_history:
+        st.write(prompt)
+
     ts_start = time()
-    resp = ask_llm(cfg_data, question=my_question, enable_st_cache=st_cache_enabled)
+    resp = ask_llm(cfg_data, question=prompt, enable_st_cache=st_cache_enabled)
     ts_stop = time()
     ts_delta = f"{(ts_stop-ts_start):.2f}"
 
@@ -209,6 +226,9 @@ def ask_llm_direct(my_question):
         my_answer.update({"my_sql":{"data":resp, "ts_delta": ts_delta}})
         my_answer.update({"my_valid_sql":{"data":"N"}})
 
+    chat_history += [{"role": "user", "content": my_question}, {"role": "assistant", "content": resp}]
+    st.session_state["chat_history"] = chat_history
+
     return my_answer
 
 def ask_rag(my_question):
@@ -217,6 +237,7 @@ def ask_rag(my_question):
     my_answer = {}
 
     st_cache_enabled = st.session_state.get("enable_st_cache", True)
+    use_last_n_message = st.session_state.get("config_chat_history", 1)
 
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
@@ -225,7 +246,7 @@ def ask_rag(my_question):
 
     with c_left:
         ts_start = time()
-        my_sql = generate_sql(cfg_data, question=my_question, enable_st_cache=st_cache_enabled)
+        my_sql = generate_sql(cfg_data, question=my_question, use_last_n_message=use_last_n_message, enable_st_cache=st_cache_enabled)
         ts_stop = time()
         ts_delta = f"{(ts_stop-ts_start):.2f}"
         my_answer.update({"my_sql":{"data":my_sql, "ts_delta": ts_delta}})
@@ -353,6 +374,16 @@ def do_sidebar():
         with st.expander("Show Configuration", expanded=False):
 
             st.checkbox("Disable RAG", value=False, key="config_disable_rag")
+            st.checkbox("Show Chat History", value=False, key="config_show_chat_history")
+
+            st.selectbox(
+                label="Chat History Length",
+                options=[-1,0,1,2,3,4,5,6,7,8,9,10],
+                index=5,  # Index 1 corresponds to value 1 in the options list
+                format_func=lambda x: "All messages" if x == -1 else f"{x} messages",
+                key="config_chat_history",
+                help="Select how many previous messages to include in the context (choose -1 for all messages) [For RAG, unavailable for Direct LLM]"
+            )
 
             # st.write(cfg_data)
             cfg_show_data(cfg_data)
