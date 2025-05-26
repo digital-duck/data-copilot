@@ -23,22 +23,30 @@ META_APP_NAME = "data_copilot"
 DEFAULT_DB_DIALECT = "SQLite"
 DEFAULT_DB_NAME = "chinook"
 DEFAULT_VECTOR_DB = "ChromaDB"
-DEFAULT_LLM_MODEL = "OpenAI GPT 3.5 Turbo" # "Alibaba QWen 2.5 Coder (Open)"
+# DEFAULT_LLM_MODEL = "OpenAI GPT 3.5 Turbo" # "Alibaba QWen 2.5 Coder (Open)"
+DEFAULT_LLM_MODEL = "Google Gemini 2.5 Flash" # "Alibaba QWen 2.5 Coder (Open)"
 # use AWS Bedrock at work
 # DEFAULT_LLM_MODEL = "AWS Bedrock Claude 3 Sonnet" 
 
 LLM_MODEL_MAP = {
-    "Anthropic Claude 3 Sonnet": 'claude-3-sonnet-20240229',
-    "Anthropic Claude 3.5 Sonnet": 'claude-3-5-sonnet-20240620',
     # https://docs.anthropic.com/en/api/claude-on-amazon-bedrock
-    # latest: 'claude-3-5-sonnet-20240620-v1:0'
+    "Anthropic Claude Sonnet 4": 'claude-sonnet-4-20250514',
+    "Anthropic Claude Opus 4": 'claude-opus-4-20250514',
+    "Anthropic Claude Sonnet 3.7": 'claude-3-7-sonnet-latest',
+    "Anthropic Claude Sonnet 3.5": 'claude-3-5-sonnet-latest',
+    "Anthropic Claude Sonnet 3": 'claude-3-sonnet-20240229',
+    # https://ai.google.dev/gemini-api/docs/models
+    "Google Gemini 2.5 Flash": 'gemini-2.5-flash-preview-05-20',
+    "Google Gemini 2.0 Flash": 'gemini-2.0-flash',
+    "Google Gemini 1.5 Flash": 'gemini-1.5-flash-latest',
+    "Google Gemini 2.5 Pro (preview)": 'gemini-2.5-pro-preview-05-06',
+    "Google Gemini 2.0 Pro": 'gemini-2.0-pro-exp',
+    "Google Gemini 1.5 Pro": 'gemini-1.5-pro-latest',
+    # https://platform.openai.com/docs/models
     "OpenAI GPT 3.5 Turbo": 'gpt-3.5-turbo',
     "OpenAI GPT 4o omni": 'gpt-4o',
     "OpenAI GPT 4o mini": 'gpt-4o-mini',
     "OpenAI GPT 4": 'gpt-4',
-    "Google Gemini 1.5 Pro": 'gemini-1.5-pro',
-    "Google Gemini Exp 1206": 'gemini-exp-1206',
-    "Google Gemini Exp 1121": 'gemini-exp-1121',
     "AWS Bedrock Claude 3 Sonnet": 'claude-3-sonnet-20240229-v1:0', 
     "Alibaba QWen 2.5 Coder (Open)": 'qwen2.5-coder:latest',
     "Alibaba QWen 2.5 Coder 1.5B (Open)": 'qwen2.5-coder:1.5b',
@@ -48,8 +56,8 @@ LLM_MODEL_MAP = {
     "DeepSeek Coder v2 (Open)": 'deepseek-coder-v2:latest',
     "Meta Llama 3.1 (Open)": 'llama3.1:latest',
     "Meta Llama 3 (Open)": 'llama3:latest',
-    "Microsoft Phi 3.5 (Open)": 'phi3.5:latest',
-    "Google Gemma2 (Open)": 'gemma2:latest',
+    "Microsoft Phi 4 (Open)": 'phi4:latest',
+    "Google Gemma3 (Open)": 'gemma3:latest',
     "Google CodeGemma (Open)": 'codegemma:latest',
     "Mistral (Open)": 'mistral:latest',
     "Mistral Nemo(Open)": 'mistral-nemo:latest',
@@ -237,7 +245,7 @@ def ask_llm_not_cached(cfg_data, question: str):
 
 
 @st.cache_data(show_spinner="Generating SQL query ...")
-def generate_sql_cached(cfg_data, question: str):
+def generate_sql_cached(cfg_data, question: str, use_last_n_message: int=1):
     vn = setup_vanna_cached(cfg_data)
     question_hint = f"""
         Hint: When generating an SQL query, you must terminate the SQL query with an semicolon!
@@ -249,11 +257,12 @@ def generate_sql_cached(cfg_data, question: str):
             allow_llm_to_see_data=True, 
             sql_row_limit=st.session_state.get("out_sql_limit", 20),
             dataset=cfg_data.get("db_name"),
+            use_last_n_message=use_last_n_message,
         )
     my_sql = vn.extract_sql(raw_sql)
     return my_sql
 
-def generate_sql_not_cached(cfg_data, question: str):
+def generate_sql_not_cached(cfg_data, question: str, use_last_n_message: int=1):
     vn = setup_vanna_cached(cfg_data)
     question_hint = f"""
         Hint: When generating an SQL query, you must terminate the SQL query with an semicolon!
@@ -265,6 +274,7 @@ def generate_sql_not_cached(cfg_data, question: str):
             allow_llm_to_see_data=True, 
             sql_row_limit=st.session_state.get("out_sql_limit", 20),
             dataset=cfg_data.get("db_name"),
+            use_last_n_message=use_last_n_message,
         )
     my_sql = vn.extract_sql(raw_sql)
     return my_sql

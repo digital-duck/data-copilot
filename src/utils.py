@@ -26,6 +26,8 @@ from lxml import html
 import pandas as pd
 import sqlite3
 
+import google.generativeai as genai 
+
 # streamlit libs
 import streamlit as st
 from streamlit_option_menu import option_menu
@@ -1360,11 +1362,11 @@ def parse_id_list(ids):
     x = ids.replace(",", " ").replace(";", " ")
     return [i.strip() for i in x.split() if i.strip()]
 
-def generate_sql(cfg_data, question: str, enable_st_cache: bool=True):
+def generate_sql(cfg_data, question: str, use_last_n_message: int=1, enable_st_cache: bool=True):
     if enable_st_cache:
-        return generate_sql_cached(cfg_data, question)
+        return generate_sql_cached(cfg_data, question, use_last_n_message=use_last_n_message)
     else:
-        return generate_sql_not_cached(cfg_data, question)
+        return generate_sql_not_cached(cfg_data, question, use_last_n_message=use_last_n_message)
 
 def run_sql(cfg_data, sql: str, enable_st_cache: bool=True):
     if enable_st_cache:
@@ -1431,6 +1433,28 @@ def snake_case(s):
     # Convert to lowercase and remove multiple underscores
     return re.sub('_+', '_', s.lower()).strip('_')
 
-# if __name__ == "__main__":
-#     # pass
-#     convert_csvs_to_excel()
+
+def list_gemini_models():
+    gemini_models = []
+    try:
+        genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
+        print("Attempting to list available Gemini models supporting generateContent:")
+
+        # Iterate through all available models
+        for model in genai.list_models():
+            # Check if the model supports the 'generateContent' method
+            if 'generateContent' in model.supported_generation_methods:
+                # print(f"- {model.name} (Display Name: {model.display_name})")
+                gemini_models.append(model.name)
+
+    except Exception as e:
+        print(f"Error listing models: {e}")
+    
+    return [i.split('/')[-1] for i in sorted(gemini_models)]
+
+if __name__ == "__main__":
+    # pass
+    # convert_csvs_to_excel()
+    gemini_models = list_gemini_models()
+    m = "\n".join(gemini_models)
+    print(f"Gemini models:\n{m}")
