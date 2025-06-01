@@ -199,23 +199,22 @@ def ask_llm_direct(my_question):
     use_last_n_message = st.session_state.get("config_chat_history", 3)
     show_chat_history = st.session_state.get("config_show_chat_history", False)
 
-    chat_history = st.session_state["chat_history"]
-    chat_history = take_last_n_messages(chat_history, n=use_last_n_message)
 
     user_message = st.chat_message("user")
     user_message.write(f"{my_question}")
 
-    if chat_history:
-        prompt = chat_history + [{"role": "user", "content": my_question}]
-    else:
-        prompt = my_question
-    if show_chat_history:
-        st.write(prompt)
+    # if chat_history:
+    #     prompt = chat_history + [{"role": "user", "content": my_question}]
+    # else:
+    #     prompt = my_question
+    prompt = my_question
+    st.write(prompt)
 
     ts_start = time()
     resp = ask_llm(cfg_data, question=prompt, enable_st_cache=st_cache_enabled)
     ts_stop = time()
     ts_delta = f"{(ts_stop-ts_start):.2f}"
+    # print(f"[DEBUG] resp = {resp}")
 
     if resp:
         assistant_message = st.chat_message(
@@ -226,8 +225,14 @@ def ask_llm_direct(my_question):
         my_answer.update({"my_sql":{"data":resp, "ts_delta": ts_delta}})
         my_answer.update({"my_valid_sql":{"data":"N"}})
 
-    chat_history += [{"role": "user", "content": my_question}, {"role": "assistant", "content": resp}]
-    st.session_state["chat_history"] = chat_history
+        if show_chat_history:
+            chat_history = st.session_state.get("chat_history",[])
+            chat_history += [{"role": "user", "content": my_question}, {"role": "assistant", "content": resp}]
+            if len(chat_history) and use_last_n_message < len(chat_history):
+                chat_history = take_last_n_messages(chat_history, n=use_last_n_message)
+            st.session_state["chat_history"] = chat_history
+            st.write(chat_history)
+
 
     return my_answer
 
