@@ -1452,6 +1452,21 @@ def list_gemini_models():
     
     return [i.split('/')[-1] for i in sorted(gemini_models)]
 
+def prepend_chat_history(chat_history, question):
+    """ Add past N chats to question as new prompt
+    """
+    if not chat_history:
+        return question
+
+    contents = []    
+    for i in chat_history:
+        if i.get("role") == "user":
+            contents.append("\n User: " + i.get("content", "") + " \n")
+        if i.get("role") == "assistant":
+            contents.append("\n Assistant: " + i.get("content", "") + " \n")
+
+    return "\n".join(contents) + f"\n User: {question} \n\n Assistant: \n"
+
 if __name__ == "__main__":
     # pass
     # convert_csvs_to_excel()
