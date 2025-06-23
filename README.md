@@ -1,4 +1,4 @@
-# data-copilot
+# Data Copilot
 
 An streamlit app built for data professionals, powered by [vanna.ai](https://github.com/vanna-ai).
 
